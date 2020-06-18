@@ -6,6 +6,7 @@ const search = document.getElementById("search"),
   imagesEl = document.getElementById("images"),
   resultsEl = document.getElementById("results"),
   container = document.getElementById("container");
+  pagination = document.getElementById('pagination');
 
   // Search for keyword and fetch from API
 function searching(e) {
@@ -38,6 +39,10 @@ function webResults(myQuery){
                       <p><a href="${item.link}">${item.link}</a></p>
                       <p>${item.htmlSnippet}</p>`
             ).join("");
+            let nextResIndex = toString(data.queries.nextPage.startIndex);
+            console.log(nextResIndex);
+            // pagination.innerHTML = `<li class="page-item"><a class="page-link" href="https://www.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&q=${myQuery}">Previous</a></li>
+            //     <li class="page-item"><a class="page-link" href="">Next</a></li>`
         }
       });
   } catch (ex) {
