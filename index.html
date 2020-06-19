@@ -31,11 +31,18 @@
         <div class="web-container">
             <div id="result-txt-heading"></div>
             <div id="results" class="results"></div>
-            <nav aria-label="page navigation">
-              <ul id="pagination" class="pagination"></ul>
-            </nav>
+            <div id="pagination" class="pagination"></div>
         </div>
     </div>
+    
+    <!-- Container for no connection popup -->
+    <div class="popup-container" id="popup-container">
+      <div class="popup">
+        <h2 id="no-connection-message">Internet connection lost</h2>
+        <button id="retry">Retry</button>
+      </div>
+    </div>
+
     <script src="js/script.js"></script>
   </body>
 </html>
