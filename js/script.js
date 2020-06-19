@@ -16,22 +16,16 @@ var webUrl;
 function searching(e) {
   e.preventDefault();
   const myQuery = search.value;
-  /*
+  
   if(!myQuery.trim()) 
   {
     console.log("nothing to search");
   } 
-  else if(!doesConnectionExist())
-  {
-    popup.style.display = 'flex';
-  }*/
-  if (myQuery.trim()) {
-    //&& doesConnectionExist())
+  else {
+    doesConnectionExist()
     webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&q=${myQuery}`;
     webResults(myQuery, webUrl);
     imageResults(myQuery);
-  } else {
-    console.log("unknown error");
   }
 }
 
@@ -39,8 +33,7 @@ function webResults(myQuery, url) {
   container.style.display = "grid";
   fetch(url)
     .then((res) => res.json()) // catch promise
-    .then((data) => {
-      // catching second promise
+    .then((data) => { // catching second promise
       console.log("fetch returned");
       console.log(data);
       resultTxtHeading.innerHTML = `<h2>Web result for: ${myQuery}</h2>`;
@@ -56,14 +49,13 @@ function webResults(myQuery, url) {
           )
           .join("");
 
-        // check if there is next page - pagination
+        // check if there is next page - pagination ${previous > 0 ? `<button onclick="getMoreResults('${previous}','${myQuery}')">Prev</button>` : ''}
         if (data.queries.nextPage) {
           let startIndex = data.queries.nextPage.startIndex;
           let previous = startIndex-4;
-          let query = myQuery;
           pagination.innerHTML = `
-            ${previous > 0 ? `<button onclick="getMoreResults('${previous}','${query}')">Prev</button>` : ''}
-            ${data.queries.nextPage ? `<button onclick="getMoreResults('${startIndex}','${query}')">Next</button>` : ""}`;
+            
+            ${data.queries.nextPage ? `<button onclick="getMoreResults('${startIndex}','${myQuery}')">Next</button>` : ''}`;
         } else {
           pagination.innerHTML = "";
         }
@@ -103,33 +95,35 @@ function imageResults(myQuery) {
   console.log("finish");
 }
 
-/*
+
 // Check internet connection
 function doesConnectionExist() {
     var xhr = new XMLHttpRequest();
-  
-    var file = "https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=9&searchType=image&q=$steak";
-    
+    var file = "https://pieroncz.github.io/website/";
     var randomNum = Math.round(Math.random() * 10000);
-
-    
-    xhr.open('HEAD', file + "?rand=" + randomNum, 'Origin', 'http://127.0.0.1:5501/index.html', true);
+ 
+    xhr.open('HEAD', file + "?rand=" + randomNum, true);
+     console.log(xhr.response); 
     xhr.send();
      
+   
     xhr.addEventListener("readystatechange", processRequest, false);
  
     function processRequest(e) {
       if (xhr.readyState == 4) {
         if (xhr.status >= 200 && xhr.status < 304) {
+          console.log("connection exists!");
           return true;
         } else {
-          popup.style.display = 'flex';
-          return false;
+          console.log("connection doesn't exist!");
+            popup.style.display = 'flex';
+           return false;
         }
       }
     }
-};
-*/
+}
+
+
 // Event listeners
 submit.addEventListener("submit", searching);
 retryBtn.addEventListener("click", (e) => {

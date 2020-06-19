@@ -163,9 +163,8 @@ nav ul li{
     margin-right: 10px;
 }
 
-
 .popup-container {
-    background-color: rgba(13, 12, 15, 0.3);
+    background-color: rgba(13, 12, 15, 0.5);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -177,7 +176,7 @@ nav ul li{
   }
 
   .popup{
-      background: #c6caccc7;
+      background: #c6cacc;
       border-radius: 5px;
       box-shadow: 0 15px 10px 3px rgba(0,0,0,0.2);
       padding: 20px;
@@ -186,7 +185,7 @@ nav ul li{
 
   .popup-container button{
       border-radius: 5px;
-
+      padding: 10px;
   }
 
 
