@@ -114,11 +114,11 @@ input[type="text"] {
 }
 
 .results h3 {
+  display: flex;
   margin: 0;
   margin-top: 50px;
   font-weight: bold;
   font-size: 20px;
-  color: black;
   text-align: left;
 }
 
@@ -136,6 +136,10 @@ input[type="text"] {
   margin-top: 8px;
   font-size: 18px;
   color: black;
+}
+
+.link {
+  color: #42a6e9;
 }
 
 .pagination {
@@ -179,13 +183,32 @@ nav ul li {
   background: #c6cacc;
   border-radius: 5px;
   box-shadow: 0 15px 10px 3px rgba(0, 0, 0, 0.2);
-  padding: 20px;
   text-align: center;
 }
 
-.popup-container button {
+.popup h2 {
+  margin: 20px;
+  margin-top: 70px;
+}
+
+.close {
+  position: absolute;
+  cursor: pointer;
+  font-size: 30px;
+  background: none;
+  margin-left: 90px;
+  border: none;
+  outline: none;
+}
+
+.retry {
   border-radius: 5px;
   padding: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(13, 12, 20);
+  color: #c6cacc;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 @media (max-width: 1340px) {
@@ -233,5 +256,8 @@ nav ul li {
   }
   .image-container {
     width: 400px;
+  }
+  .results h3 {
+    max-width: 300px;
   }
 }
