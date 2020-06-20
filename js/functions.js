@@ -1,36 +1,65 @@
+// Function for mapping through web results and displaing them for user
 function displayWebResults(data) {
   resultsEl.innerHTML = data.items
     .map(
       (item) =>
         `<h3><a href="${item.link}">${item.htmlTitle}</a></h3>
-                              <p><a href="${item.link}">${item.link}</a></p>
-                              <p>${item.htmlSnippet}</p>`
+          <p><a class="link" href="${item.link}">${item.link}</a></p>    
+          <p>${item.htmlSnippet}</p>` // Snippet from searched site
+    )
+    .join(""); // return array as a string
+    
+    paginationCheck(data, 'web');
+}
+
+// Function for mapping through image results and displaying them for user
+function displayImageResults(data) {
+  imagesEl.innerHTML = data.items
+    .map(
+      (item) =>
+        `<a href="${item.image.contextLink}"><img src="${item.link}" /></a>` // display an image and use it as the link for its source
     )
     .join("");
 
-  // check if there is next page - pagination ${previous > 0 ? `<button onclick="getMoreResults('${previous}','${myQuery}')">Prev</button>` : ''}
-  if (data.queries.nextPage) {
-    let startIndex = data.queries.nextPage.startIndex;
-    let previous = startIndex - 4;
+    paginationCheck(data, 'img');
+}
+
+// Pagination check
+function paginationCheck(data, webOrImg){
+  // Check if web or img
+  if(webOrImg === 'web'){
+    pagination = paginationWeb;
+  }else{
+    pagination = paginationImg;
+  }
+  // check if there is next page - pagination
+  if (data.queries.nextPage || data.queries.previousPage) {
     pagination.innerHTML = `
-              
-              ${
-                data.queries.nextPage
-                  ? `<button onclick="getMoreResults('${startIndex}','${myQuery}')">Next</button>`
-                  : ""
-              }`;
+     ${
+       data.queries.previousPage
+         ? `<button onclick="getMoreResults('${data.queries.previousPage[0].startIndex}','${webOrImg}')">Prev</button>`
+         : ""
+     }
+     ${
+       data.queries.nextPage
+         ? `<button onclick="getMoreResults('${data.queries.nextPage[0].startIndex}','${webOrImg}')">Next</button>`
+         : ""
+     }`;
   } else {
     pagination.innerHTML = "";
   }
 }
 
-function displayImageResults(data) {
-  imagesEl.innerHTML = data.items
-    .map(
-      (item) =>
-        `<a href="${item.image.contextLink}"><img src="${item.link}" /></a>`
-    )
-    .join("");
+// search for pagination results
+function getMoreResults(startIndex,choice) {
+  doesConnectionExist();
+  if(choice === 'web'){
+     webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&start=${startIndex}&q=${myQuery}`;
+    searchFor(myQuery, webUrl);
+  }else{
+    imgUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=9&searchType=image&start=${startIndex}&q=${myQuery}`;
+    searchFor(myQuery, imgUrl);
+  }
 }
 
 // Check internet connection
