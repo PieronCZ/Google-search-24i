@@ -1,63 +1,52 @@
-// Creating constants
-const search = document.getElementById("search"),
-  submit = document.getElementById("submit"),
-  resultImgHeading = document.getElementById("result-img-heading"),
-  resultTxtHeading = document.getElementById("result-txt-heading"),
-  imagesEl = document.getElementById("images"),
-  resultsEl = document.getElementById("results"),
-  retryBtn = document.getElementById("retry"),
-  popup = document.getElementById("popup-container"),
-  pagination = document.getElementById("pagination"),
-  container = document.getElementById("container");
+const retryBtn = document.getElementById("retry");
 
 // Getting query and passing it to a function, that is responsible for fetching and displaying results
 function searching(e) {
   e.preventDefault();
-  myQuery = search.value;
+  myQuery = search.value; // storing query in the variable myQuery
 
-  if (!myQuery.trim()) {
+  if (!myQuery.trim()) {  // deleting white spaces and checking if there is a query in the search bar
     console.log("nothing to search");
   } else {
     webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&q=${myQuery}`;
     imgUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=9&searchType=image&q=${myQuery}`;
     doesConnectionExist();
-    searchFor(myQuery, webUrl);
+    searchFor(myQuery, webUrl);   // Using url as variables i can use the same functions for searching images and results
     searchFor(myQuery, imgUrl);
   }
 }
 
-function searchFor(myQuery, url) {
-  container.style.display = "grid";
-  fetch(url)
+// Universal function for searching web and images
+function searchFor(myQuery, url) { 
+  container.style.display = "grid"; // show container
+  fetch(url)  
     .then((res) => res.json()) // catch promise
-    .then((data) => {
-      // catching second promise
-      console.log("fetch returned");
+    .then((data) => { // catching second promise
+      console.log("fetch returned");  // for debugging purposes
       console.log(data);
-      resultTxtHeading.innerHTML = `<h2>Web result for: ${myQuery}</h2>`;
+      
       if (!data.items && !data.error) {
-        container.innerHTML = notFoundTxt;
-      } else if (data.error.code === 429) {
-        container.innerHTML = maxQueriesTxt;
-      } else if (url === webUrl) {
+        container.innerHTML = notFoundTxt;  // query not found message
+      } else if (data.error) {
+        if(data.error.code === 429){
+          container.innerHTML = maxQueriesTxt;  // displaying max queries limit per day exceeded 
+        }
+        // Decide what to search for
+      } else if (url === webUrl) {  
+        resultWebHeading.innerHTML = `<h2>Web result for: ${myQuery}</h2>`;
         displayWebResults(data);
-      } else if (url === imageUrl) {
+      } else if (url === imgUrl) {
+        resultImgHeading.innerHTML = `<h2>Image result for: ${myQuery}</h2>`;
         displayImageResults(data);
       }
     })
-    .catch((reason) => console.log(`Fetch failed because ${reason}`));
-  console.log("finish");
-}
-
-// Pagination results
-function getMoreResults(startIndex, query) {
-  webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&start=${startIndex}&q=${query}`;
-  searchFor(query, webUrl);
+    .catch((reason) => console.log(`Fetch failed because ${reason}`));  // catching errors while fetching
+  console.log("finish");  // for debugging purposes
 }
 
 // Event listeners
-submit.addEventListener("submit", searching);
-retryBtn.addEventListener("click", (e) => {
-  searching(e);
-  popup.style.display = "none";
+submit.addEventListener("submit", searching); // enter or click on button
+retryBtn.addEventListener("click", (e) => {   // internet error popup retry button
+  searching(e); // try to search again
+  popup.style.display = "none"; // and hide popup
 });
