@@ -8,8 +8,8 @@ function displayWebResults(data) {
           <p>${item.htmlSnippet}</p>` // Snippet from searched site
     )
     .join(""); // return array as a string
-    
-    paginationCheck(data, 'web');
+
+  paginationCheck(data, "web");
 }
 
 // Function for mapping through image results and displaying them for user
@@ -21,15 +21,15 @@ function displayImageResults(data) {
     )
     .join("");
 
-    paginationCheck(data, 'img');
+  paginationCheck(data, "img");
 }
 
 // Pagination check
-function paginationCheck(data, webOrImg){
+function paginationCheck(data, webOrImg) {
   // Check if web or img
-  if(webOrImg === 'web'){
+  if (webOrImg === "web") {
     pagination = paginationWeb;
-  }else{
+  } else {
     pagination = paginationImg;
   }
   // check if there is next page - pagination
@@ -51,12 +51,12 @@ function paginationCheck(data, webOrImg){
 }
 
 // search for pagination results
-function getMoreResults(startIndex,choice) {
+function getMoreResults(startIndex, choice) {
   doesConnectionExist();
-  if(choice === 'web'){
-     webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&start=${startIndex}&q=${myQuery}`;
+  if (choice === "web") {
+    webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&start=${startIndex}&q=${myQuery}`;
     searchFor(myQuery, webUrl);
-  }else{
+  } else {
     imgUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=9&searchType=image&start=${startIndex}&q=${myQuery}`;
     searchFor(myQuery, imgUrl);
   }
@@ -64,26 +64,27 @@ function getMoreResults(startIndex,choice) {
 
 // Check internet connection
 function doesConnectionExist() {
-  var xhr = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest(); // Creating new XMLHttpRequest object
   var file = "https://pieroncz.github.io/website/"; // Link to hosted random project on my Github which I am sure exist
   var randomNum = Math.round(Math.random() * 10000);
 
-  xhr.open("HEAD", file + "?rand=" + randomNum, true);
+  // Constructing request
+  xhr.open("HEAD", file + "?rand=" + randomNum, true); //(type of HTTP method, the URL to send request to, asynchronously(because true))
   console.log(xhr.response);
-  xhr.send();
+  xhr.send(); // Transmit HTTP request
 
-  xhr.addEventListener("readystatechange", processRequest, false);
+  xhr.addEventListener("readystatechange", processRequest, false); // readysatechange is event fired by our xhr object
 
-  function processRequest(e) {
+  function processRequest() {
     if (xhr.readyState == 4) {
+      // 4 = our request has been completed
       if (xhr.status >= 200 && xhr.status < 304) {
+        // status code between 200 and 304 means that we have good connection if it exceeds these bounds, something weird going on
         // out of that range something is going wrong
         console.log("connection exists!");
-        return true;
       } else {
         console.log("connection doesn't exist!");
-        popup.style.display = "flex";
-        return false;
+        popup.style.display = "flex"; // show internet connection error popup
       }
     }
   }
