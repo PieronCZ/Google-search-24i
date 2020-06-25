@@ -1,37 +1,30 @@
-const retryBtn = document.getElementById("retry"),
-  closeBtn = document.getElementById("close");
-
-// Getting query and passing it to a function, that is responsible for fetching and displaying results
 function searching(e) {
   e.preventDefault();
-  myQuery = search.value; // storing query in the variable myQuery
+
+  myQuery = escapeRegex(search.value);
 
   if (!myQuery.trim()) {
-    // deleting white spaces and checking if there is a query in the search bar
-    console.log("nothing to search");
   } else {
-    webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=4&q=${myQuery}`;
-    imgUrl = `https://customsearch.googleapis.com/customsearch/v1?key=AIzaSyA1EmO9ayEkJ3V7Fd5D5nbI2BLby45eeMk&cx=014821957775912081400:skraxelfrf0&num=9&searchType=image&q=${myQuery}`;
-    doesConnectionExist();
-    searchFor(myQuery, webUrl); // Using url as variables i can use the same functions for searching images and results
+    webUrl = `https://customsearch.googleapis.com/customsearch/v1?key=${key}&cx=${cx}:skraxelfrf0&num=4&q=${myQuery}`;
+    imgUrl = `https://customsearch.googleapis.com/customsearch/v1?key=${key}&cx=${cx}:skraxelfrf0&num=9&searchType=image&q=${myQuery}`;
+    renderLoader(loading);
+    searchFor(myQuery, webUrl);
     searchFor(myQuery, imgUrl);
   }
 }
 
-// Universal function for searching web and images
-function searchFor(myQuery, url) {
-  fetch(url)
-    .then((res) => res.json()) // catch promise
-    .then((data) => {
-      // catching second promise
-      console.log("fetch returned"); // for debugging purposes
-      console.log(data);
-      container.style.display = "grid"; // show container
+// Fetch
+/*
+async function searchFor(myQuery, url) {
+  try {
+    let response = await fetch(url);
+    await response.json().then((data) => {
+      container.style.display = "grid";
       if (!data.items && !data.error) {
-        container.innerHTML = notFoundTxt; // query not found message
+        container.innerHTML = notFoundTxt;
       } else if (data.error) {
         if (data.error.code === 429) {
-          container.innerHTML = maxQueriesTxt; // displaying max queries limit per day exceeded
+          container.innerHTML = maxQueriesTxt;
         }
         // Decide what to search for
       } else if (url === webUrl) {
@@ -41,18 +34,38 @@ function searchFor(myQuery, url) {
         resultImgHeading.innerHTML = `<h2>Image result for: ${myQuery}</h2>`;
         displayImageResults(data);
       }
+    });
+  } catch (reason) {
+    (reason) => console.log(`Fetch failed because ${reason}`);
+  }
+}*/
+
+function searchFor(myQuery, url) {
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      container.style.display = "grid";
+      if (!data.items && !data.error) {
+        clearLoader();
+        container.innerHTML = notFoundTxt;
+      } else if (data.error) {
+        if (data.error.code === 429) {
+          clearLoader();
+          container.innerHTML = maxQueriesTxt;
+        }
+        // Decide what to search for
+      } else if (url === webUrl) {
+        resultWebHeading.innerHTML = `<h2>Web result for: ${myQuery}</h2>`;
+        displayWebResults(data);
+        clearLoader();
+      } else if (url === imgUrl) {
+        resultImgHeading.innerHTML = `<h2>Image result for: ${myQuery}</h2>`;
+        displayImageResults(data);
+        clearLoader();
+      }
     })
-    .catch((reason) => console.log(`Fetch failed because ${reason}`)); // catching errors while fetching
-  console.log("finish"); // for debugging purposes
+    .catch((reason) => console.log(`Fetch failed because ${reason}`));
 }
 
 // Event listeners
-submit.addEventListener("submit", searching); // enter or click on button
-retryBtn.addEventListener("click", (e) => {
-  // internet error popup retry button
-  searching(e); // try to search again
-  popup.style.display = "none"; // and hide popup
-});
-closeBtn.addEventListener("click", () => {
-  popup.style.display = "none";
-});
+submit.addEventListener("submit", searching);

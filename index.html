@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/imgStyle.css" />
     <link rel="stylesheet" href="css/webStyle.css" />
-    <link rel="stylesheet" href="css/popupStyle.css" />
+    <link rel="stylesheet" href="css/loaderStyle.css">
     <!-- Link to font awesome icons-->
     <link
       rel="stylesheet"
@@ -28,11 +28,15 @@
       </form>
     </div>
 
-    <!--Container for web and img containers - helps me to control both of them at the same time-->
+    <div class="loading" id="loading"></div>
+
+    <!--Container for web and img containers-->
     <div id="container" class="container">
       <!--Container for image resutls-->
       <div class="image-container">
         <div id="result-img-heading"></div>
+        <!--Loading images-->
+        <div class="loading" id="loading-img"></div>
         <!--Image results-->
         <div id="images" class="images"></div>
         <div id="paginationImg" class="pagination"></div>
@@ -40,6 +44,8 @@
       <!--Container for web results-->
       <div class="web-container">
         <div id="result-txt-heading"></div>
+        <!--Loading web results-->
+        <div class="loading" id="loading-web"></div>
         <!--Web results-->
         <div id="results" class="results"></div>
         <div id="paginationWeb" class="pagination"></div>

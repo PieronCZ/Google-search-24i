@@ -31,7 +31,7 @@
 }
 
 
-@media (max-width: 1651px) {
+@media (max-width: 1689px) {
   .images{
     grid-template-rows: repeat(5,160px);
   }
