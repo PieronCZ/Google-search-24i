@@ -1,9 +1,7 @@
 .web-container {
   background-color: #f5fdffe3;
-  border: 3px solid #3742448f;
   border-radius: 20px;
-  margin-left: 10px;
-  width: 600px;
+  margin: 10px;
 }
 
 .web-container h2 {
@@ -45,25 +43,4 @@
 
 .link {
   color: #42a6e9;
-}
-
-@media (max-width: 1340px) {
-  .web-container {
-    width: 600px;
-  }
-}
-
-@media (max-width: 1320px) {
-  .web-container {
-    width: 500px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .web-container {
-    width: 400px;
-  }
-  .results h3 {
-    max-width: 300px;
-  }
 }
