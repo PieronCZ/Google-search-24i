@@ -1,6 +1,12 @@
-import {modifyStartIndex, modifyUrl,startIndex, webUrl, imgUrl} from './js/variables.js';
-import {elements} from './js/Elements.js';
-import * as functions from './js/functions.js';
+import {
+  modifyStartIndex,
+  modifyUrl,
+  startIndex,
+  webUrl,
+  imgUrl,
+} from "./js/variables.js";
+import { elements } from "./js/Elements.js";
+import * as functions from "./js/functions.js";
 
 export default "Index export";
 export let myQuery;
@@ -14,45 +20,50 @@ function searching(e) {
   // Check if there is query
   if (!myQuery.trim()) {
   } else {
-    functions.renderLoader(elements.loading);
-    modifyUrl('webUrl', startIndex, myQuery);
+    modifyUrl("webUrl", startIndex, myQuery);
+    elements.loading.style.display = "flex";
     searchFor(myQuery, webUrl);
-    modifyUrl('imgUrl', startIndex, myQuery);
+    modifyUrl("imgUrl", startIndex, myQuery);
+    elements.loading.style.display = "flex";
     searchFor(myQuery, imgUrl);
   }
 }
 
+// Fetch from api, put results to appropriate container
 export function searchFor(myQuery, url) {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data)
       elements.container.style.display = "grid";
+
+      // Errors handilng
       if (!data.items && !data.error) {
-        functions.clearLoader();
+        elements.loading.style.display = "none";
         elements.container.innerHTML = `<h3>We did not find any results for: ${myQuery}</h3>`;
       } else if (data.error) {
         if (data.error.code === 429) {
-          functions.clearLoader();
-          elements.container.innerHTML =  `<h3>Exceeded the maximum number of queries per day :(</h3>`;
+          elements.loading.style.display = "none";
+          elements.container.innerHTML = `<h3>Exceeded the maximum number of queries per day :(</h3>`;
         }
+
         // Decide what to search for
       } else if (url === webUrl) {
         elements.resultWebHeading.innerHTML = `<h2>Web result for: ${myQuery}</h2>`;
         functions.displayWebResults(data);
-        console.log('returned from web displaying');
+        elements.loading.style.display = "none";
       } else if (url === imgUrl) {
         elements.resultImgHeading.innerHTML = `<h2>Image result for: ${myQuery}</h2>`;
         functions.displayImageResults(data);
-        console.log('returned from images displaying');
+        elements.loading.style.display = "none";
       }
     })
-    .catch((reason) => console.log(`Fetch failed because ${reason}`));
-    (async() => {
-      const moduleSpecifier = './js/functions.js';
-      const module = await import(moduleSpecifier);
-      module.clearLoader();
-    })();
+    // Catching fetch errors
+    .catch((reason) => {
+      elements.loading.style.display = "none";
+      elements.container.style.display = "grid";
+      elements.container.innerHTML = `<h3>Can't search for results... Check Your internet connection</h3>`;
+      console.log(`Fetch failed because ${reason}`);
+    });
 }
 
 // Event listeners
