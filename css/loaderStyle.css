@@ -1,21 +1,25 @@
-.loader{
-    margin: 5rem auto;
-    text-align: center;
+.loading {
+  display: none;
 }
 
-.loader svg{
-    height: 5.5rem;
-    width: 5.5rem;
-    fill: #ec7c7cca;
-    transform-origin: 44% 50%;
-    animation: rotate 1.5s infinite linear;
+.loader {
+  margin: 5rem auto;
+  text-align: center;
 }
 
-@keyframes rotate{
-    0%{
-        transform: rotate(0);
-    }
-    100%{
-        transform: rotate(360deg);
-    }
+.loader svg {
+  height: 5.5rem;
+  width: 5.5rem;
+  fill: #ec7c7cca;
+  transform-origin: 44% 50%;
+  animation: rotate 1.5s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

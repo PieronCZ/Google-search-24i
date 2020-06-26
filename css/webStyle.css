@@ -38,9 +38,9 @@
   margin: 0;
   margin-top: 8px;
   font-size: 18px;
-  color: black;white-space: nowrap;
-  overflow: hidden;
-  text-overflow:ellipsis;
+  color: black;
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
 }
 
 .link {

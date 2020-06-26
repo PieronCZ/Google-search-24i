@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/imgStyle.css" />
     <link rel="stylesheet" href="css/webStyle.css" />
-    <link rel="stylesheet" href="css/loaderStyle.css">
+    <link rel="stylesheet" href="css/loaderStyle.css" />
     <!-- Link to font awesome icons-->
     <link
       rel="stylesheet"
@@ -28,35 +28,36 @@
       </form>
     </div>
 
-    <div class="loading" id="loading"></div>
+    <!--Handling loading state-->
+    <div class="loading" id="loading">
+      <div class="loader">
+        <svg>
+          <use href="img/loader.svg#icon-cw"></use>
+        </svg>
+      </div>
+    </div>
 
     <!--Container for web and img containers-->
     <div id="container" class="container">
       <!--Container for image resutls-->
       <div class="image-container">
         <div id="result-img-heading"></div>
-        <!--Loading images-->
-        <div class="loading" id="loading-img"></div>
+
         <!--Image results-->
         <div id="images" class="images"></div>
-        <div id="paginationImg" class="pagination">
-          
-        </div>
+        <div id="paginationImg" class="pagination"></div>
       </div>
       <!--Container for web results-->
       <div class="web-container">
         <div id="result-txt-heading"></div>
-        <!--Loading web results-->
-        <div class="loading" id="loading-web"></div>
+
         <!--Web results-->
         <div id="results" class="results"></div>
-        <div id="paginationWeb" class="pagination">
-          
-        </div>
+        <div id="paginationWeb" class="pagination"></div>
       </div>
     </div>
 
-    <!--Scripts sources-->
+    <!--Modules-->
     <script type="module" src="index.js"></script>
     <script type="module" src="js/variables.js"></script>
     <script type="module" src="js/functions.js"></script>
